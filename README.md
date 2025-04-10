@@ -18,4 +18,4 @@ pip3 install pandas numpy matplotlib scikit-learn tensorflow
 python3 baseline_model.py
 ```
 
-You can optional `cd` deeper into the folder structure to run the experimental versions or overwrite the root file with the one you want
+You can optionally `cd` deeper into the folder structure to run the experimental versions or overwrite the root baseline file with the one you want
