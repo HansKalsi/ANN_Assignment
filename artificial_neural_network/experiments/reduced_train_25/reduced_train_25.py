@@ -15,11 +15,6 @@ test_data = pd.read_csv('../dataset_assets/optdigits.tes', header=None)
 X_train, y_train = train_data.iloc[:, :-1], train_data.iloc[:, -1]
 X_test, y_test = test_data.iloc[:, :-1], test_data.iloc[:, -1]
 
-
-# Reduce training set
-reduction_ratio = 0.25
-reduced_size = int(len(train_data) * reduction_ratio)
-
 # Normalize pixel values
 X_train = X_train / 16.0  # values range from 0–16
 X_test = X_test / 16.0
