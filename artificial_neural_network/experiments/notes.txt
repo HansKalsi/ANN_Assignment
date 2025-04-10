@@ -1,0 +1,272 @@
+# Baseline
+Experiment: Baseline Model
+Layers: 64 - 32 - 10
+Activation: ReLU + Softmax
+Architecture: Input(64) - Dense(64, relu) - Dense(32, relu) - Output(10, softmax)
+Optimizer: Adam (default LR)
+Loss: categorical_crossentropy
+Epochs: 20
+Batch size: 32
+
+Train Acc: ~99.5%
+Val Acc: ~98.7%
+Test Acc: 95.55%
+Test Loss: 13.17%
+
+Key Confusion:
+- 3 vs 8: 5 errors
+- 7 vs 9: 7 errors
+- 8 vs 1: 6 errors
+- 8 vs 9: 5 errors
+
+Observations:
+- Fast convergence
+- Low validation loss
+- Excellent generalization
+- Minimal confusion across most classes
+
+
+# Deeper Network
+Experiment: Deeper Network
+Layers: 64 - 32 - 16 - 10
+Activation: ReLU + Softmax
+Architecture: Input(64) - Dense(64, relu) - Dense(32, relu) - Dense(16, relu) - Output(10, softmax)
+Optimizer: Adam (default LR)
+Loss: categorical_crossentropy
+Epochs: 20
+Batch size: 32
+
+Train Acc: ~99.6%
+Val Acc: ~98.6%
+Test Acc: 95.60%
+Test Loss: 16.00%
+
+Key Confusion:
+- 3 vs 8: 7 errors
+- 7 vs 9: 11 errors
+- 8 vs 1: 7 errors
+- 8 vs 9: 8 errors
+
+
+Observations:
+- Training accuracy slightly increased
+- Higher test loss despite similar accuracy
+- Confusion increased in overlapping digit classes
+- Validation loss plateaued early
+- Signs of overfitting
+- Added depth did not improve performance
+
+Conclusion:
+- Both models achieved strong accuracy, but the baseline model showed better generalization (lower loss).
+- The deeper model introduced slightly more overfitting and confusion.
+- Baseline model preferred due to simplicity and stronger loss metrics.
+
+
+# Dropout Regularization
+Experiment: Dropout Regularization
+Layers: 64 - 32 - 10
+Dropout: 0.2 after each hidden layer
+Architecture: Input(64) - Dense(64, relu) - Dropout(0.2) - Dense(32, relu) - Dropout(0.2) - Output(10, softmax)
+Optimizer: Adam (default LR)
+Loss: categorical_crossentropy
+Epochs: 20
+Batch size: 32
+
+Train Acc: ~98.6%
+Val Acc: ~98.9%
+Test Acc: 95.38%
+Test Loss: 13.05%
+
+Key Confusion:
+- 3 vs 8: 0 errors
+- 7 vs 9: 9 errors
+- 8 vs 1: 11 errors
+- 8 vs 9: 5 errors
+- 3 vs 2: 9 errors
+
+Observations:
+- Dropout reduced overfitting (train accuracy slightly lower than val)
+- Test accuracy slightly lower than baseline, but test loss improved
+- Validation and loss curves very stable
+- Reduced 3 vs 8 confusion but at the cost of replacing that with 3 vs 2 confusion
+
+Conclusion:
+- Dropout helped generalization and stabilized training
+- Slight trade-off in accuracy, but improved confidence in predictions (lower loss)
+
+
+# Optimiser SGD Comparison
+Experiment: Optimiser SGD Comparison
+Layers: 64 - 32 - 10
+Architecture: Input(64) - Dense(64, relu) - Dense(32, relu) - Output(10, softmax)
+Optimizer: SGD (LR: 0.01, Momentum: 0.9)
+Loss: categorical_crossentropy
+Epochs: 20
+Batch size: 32
+
+Train Acc: ~98.8%
+Val Acc: ~98.5%
+Test Acc: 95.10%
+Test Loss: 17.77%
+
+Key Confusion:
+- 3 vs 8: 0 errors
+- 7 vs 9: 9 errors
+- 8 vs 1: 11 errors
+- 8 vs 9: 5 errors
+- 3 vs 2: 9 errors
+
+Observations:
+- Slower convergence compared to Adam
+- Highest test loss so far (lowest confidence)
+- Confusion between 8 and 1 worsened
+- No performance advantage observed over Adam
+Conclusion:
+- SGD reached similar accuracy, but with higher loss and more confusion
+- Adam remains the better optimizer for this task and dataset
+
+
+# Smaller Network
+Experiment: Smaller Network
+Layers: 32 - 16 - 10
+Architecture: Input(64) - Dense(32, relu) - Dense(16, relu) - Output(10, softmax)
+Optimizer: Adam (default LR)
+Loss: categorical_crossentropy
+Epochs: 20
+Batch size: 32
+
+Train Acc: ~98.3%
+Val Acc: ~98.3%
+Test Acc: 94.27%
+Test Loss: 18.46%
+
+Key Confusion:
+- 3 vs 8: 10 errors
+- 7 vs 9: 9 errors
+- 8 vs 1: 8 errors
+- 8 vs 9: 7 errors
+
+Observations:
+- Very stable training & loss curves
+- Noticeable drop in confidence (↑ test loss)
+- Confusion increased on visual lookalikes
+- Smaller network still performs well, but trade-off in accuracy & generalization
+Conclusion:
+- A good lightweight option, but not as strong as the baseline model
+
+
+# L2 Regularization
+Experiment: L2 Regularization
+Layers: 64 - 32 - 10
+Architecture: Input(64) - Dense(64, relu, L2=0.001) - Dense(32, relu, L2=0.001) - Output(10, softmax)
+Optimizer: Adam (default LR)
+Loss: categorical_crossentropy + L2
+Epochs: 20
+Batch size: 32
+
+Train Acc: ~98.9%
+Val Acc: ~98.6%
+Test Acc: 95.38%
+Test Loss: 24.72%
+
+Key Confusion:
+- 3 vs 8: 2 errors
+- 7 vs 9: 2 errors
+- 8 vs 1: 6 errors
+- 8 vs 9: 4 errors
+- 3 vs 2: 6 errors
+- 7 vs 5: 11 errors
+
+Observations:
+- Very stable loss & accuracy curves
+- Highest test loss, but strong classification performance
+- Dramatic reduction in key digit confusion errors
+- Indicates more robust, generalized learning
+Conclusion:
+- L2 regularization improves stability and generalization, but increases uncertainty/confidence (↑ loss)
+- A strong technique for reducing specific class confusion
+
+
+# Reduced Training Data to 25%
+Experiment: Reduced Training Data to 25%
+Layers: 64 - 32 - 10
+Architecture: Input(64) - Dense(64, relu) - Dense(32, relu) - Output(10, softmax)
+Optimizer: Adam (default LR)
+Loss: categorical_crossentropy
+Training samples used: 25%
+Epochs: 20
+Batch size: 32
+
+Train Acc: ~96.4%
+Val Acc: ~95.9%
+Test Acc: 93.71%
+Test Loss: 21.94%
+
+Key Confusion:
+- 3 vs 8: 0 errors
+- 7 vs 9: 12 errors
+- 8 vs 1: 5 errors
+- 8 vs 9: 12 errors
+- 1 vs 8: 14 errors
+
+Observations:
+- Minimal accuracy drop despite major data reduction
+- Loss and generalization held up well
+- Higher confusion on lookalike digits (7/9, 8/9)
+Conclusion:
+- Model is highly data-efficient
+- 25% training data is usable for decent performance, but impacts fine-grained digit separation
+
+
+# Reduced Training Data to 75%
+Experiment: Reduced Training Data to 75%
+Layers: 64 - 32 - 10
+Architecture: Input(64) - Dense(64, relu) - Dense(32, relu) - Output(10, softmax)
+Optimizer: Adam (default LR)
+Loss: categorical_crossentropy
+Training samples used: 75%
+Epochs: 20
+Batch size: 32
+
+Train Acc: ~99.1%
+Val Acc: ~98.5%
+Test Acc: 94.77%
+Test Loss: 16.61%
+
+Key Confusion:
+- 3 vs 8: 5 errors
+- 7 vs 9: 8 errors
+- 8 vs 1: 9 errors
+- 8 vs 9: 6 errors
+
+Observations:
+- Excellent balance between dataset size and performance
+- Most confusion values stayed near baseline
+- Only minor loss in test confidence (+loss)
+Conclusion:
+- 75% of the training set achieves near-baseline performance
+- Good trade-off point if training time or data availability is limited
+
+
+# Misclassified Digits Visualisation
+Experiment: Visualizing Misclassified Digits
+Dataset: Optical Recognition of Handwritten Digits (UCI)
+Model Used: Baseline (64 → 32 → 10, ReLU + Softmax)
+
+Objective:
+To visualize and analyze key digit misclassifications made by the trained model, particularly among historically confused digit pairs.
+
+Method:
+- Used test predictions from the best-performing model.
+- Extracted samples where true and predicted labels differed.
+- Focused on common confusion pairs: 3→8, 7→9, 8→1, and 8→9.
+- Plotted 5 examples per pair in a unified grid.
+
+Results:
+- Test Accuracy: 95.44%
+- Test Loss: 15.53%
+- Confusion matrix confirmed persistent errors in 3/8, 7/9, and 8-related predictions.
+- Visual inspection revealed similarities in loops, stroke density, or digit completeness, which likely caused the confusion.
+
+Conclusion:
+This experiment provided qualitative support for the quantitative results in the confusion matrix. Misclassified digit plots serve as powerful visual evidence of model limitations. Insights gained here could guide future improvements such as data augmentation or feature refinement.
